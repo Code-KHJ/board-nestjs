@@ -3,16 +3,6 @@
 .env
 ormconfig.json
 
-### yarn ###
-# used Zero-Install
-.yarn/*
-!.yarn/cache
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-
 # unused Zero-Install
 .yarn/*
 !.yarn/patches
@@ -21,3 +11,4 @@ ormconfig.json
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
