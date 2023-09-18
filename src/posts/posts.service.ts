@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from '../entity/post.entity';
 import { Comment } from '../entity/comment.entity';
-import { FindManyOptions, Like, Repository, SelectQueryBuilder } from 'typeorm';
+import { FindManyOptions, Like, Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { CreateResponseDto } from './dto/create-response.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -118,8 +118,6 @@ export class PostsService {
       order: { created_at: 'DESC' },
     };
     const posts = await this.postRepository.find(options);
-
-    /////댓글 갯수 넣는 것 추가해야해!!!!
 
     const result: PostsResponseDto[] = [];
 
