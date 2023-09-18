@@ -17,7 +17,7 @@ export class PostsController {
     status: 200,
     description: '전체 조회 성공',
   })
-  async getAllPosts(@Query() getPostsDto: GetPostsDto) {
+  getAllPosts(@Query() getPostsDto: GetPostsDto) {
     return this.postsService.findAll(getPostsDto);
   }
 
@@ -27,7 +27,7 @@ export class PostsController {
     status: 200,
     description: '조회 성공',
   })
-  async getPost(@Param('id') id: number) {
+  getPost(@Param('id') id: number) {
     return this.postsService.findOne(id);
   }
 
@@ -47,7 +47,7 @@ export class PostsController {
     status: 200,
     description: '수정 성공',
   })
-  async updatePost(@Param('id') id: number, @Body() updatePostDto: UpdatePostDto) {
+  updatePost(@Param('id') id: number, @Body() updatePostDto: UpdatePostDto) {
     return this.postsService.update(id, updatePostDto);
   }
 
@@ -57,7 +57,7 @@ export class PostsController {
     status: 200,
     description: '삭제 성공',
   })
-  async deletePost(@Param('id') id: number, @Body() deletePostDto: DeletePostDto) {
+  deletePost(@Param('id') id: number, @Body() deletePostDto: DeletePostDto) {
     deletePostDto.id = id;
     return this.postsService.delete(deletePostDto);
   }

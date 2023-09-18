@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from '../entity/post.entity';
+import { Comment } from '../entity/comment.entity';
 import { FindManyOptions, Like, Repository, SelectQueryBuilder } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { CreateResponseDto } from './dto/create-response.dto';
@@ -10,15 +11,21 @@ import { DeletePostDto } from './dto/delete-post.dto';
 import { FindOnePostDto } from './dto/findone-post.dto';
 import { GetPostsDto } from './dto/get-posts.dto';
 import { PostsResponseDto } from './dto/posts-response.dto';
+import bcrypt from 'bcrypt';
+
+const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUNDS));
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
+    @InjectRepository(Comment)
+    private readonly commentRepository: Repository<Comment>,
   ) {}
 
   async create(createPostDto: CreatePostDto): Promise<CreateResponseDto> {
+    createPostDto.password = bcrypt.hashSync(createPostDto.password, salt);
     try {
       const post = await this.postRepository.create(createPostDto);
       await this.postRepository.save(post);
@@ -36,9 +43,11 @@ export class PostsService {
       throw new HttpException('NOT_FOUND', HttpStatus.NOT_FOUND);
     }
 
-    if (post.password !== password) {
+    const match = await bcrypt.compare(password, post.password);
+    if (!match) {
       throw new HttpException('UNAUTHORIZED', HttpStatus.UNAUTHORIZED);
     }
+
     post.title = title;
     post.content = content;
     post.writer = writer;
@@ -59,7 +68,8 @@ export class PostsService {
       throw new HttpException('NOT_FOUND', HttpStatus.NOT_FOUND);
     }
 
-    if (post.password !== password) {
+    const match = await bcrypt.compare(password, post.password);
+    if (!match) {
       throw new HttpException('UNAUTHORIZED', HttpStatus.UNAUTHORIZED);
     }
 
@@ -85,7 +95,6 @@ export class PostsService {
     if (page === undefined) {
       page = 1;
     }
-    console.log(page);
     const skip = (page - 1) * take;
 
     if (title === undefined) {
@@ -115,7 +124,13 @@ export class PostsService {
     const result: PostsResponseDto[] = [];
 
     for (const post of posts) {
-      const postItem = new PostsResponseDto(post.id, post.title, post.writer, post.content.slice(0, 10));
+      const commentCount = await this.commentRepository
+        .createQueryBuilder('comment')
+        .select('COUNT(*) as count')
+        .where(`comment.postId = ${post.id}`)
+        .andWhere('comment.parent IS NULL')
+        .getRawOne();
+      const postItem = new PostsResponseDto(post.id, post.title, post.writer, post.content.slice(0, 10), commentCount.count);
       result.push(postItem);
     }
 

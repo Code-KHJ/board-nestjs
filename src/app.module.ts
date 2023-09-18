@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { PostsModule } from './posts/posts.module';
 import { APP_PIPE } from '@nestjs/core';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { APP_PIPE } from '@nestjs/core';
       }),
     }),
     PostsModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [
