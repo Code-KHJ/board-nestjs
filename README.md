@@ -11,11 +11,11 @@ Nest.js로 개발한 익명 게시판 CRUD 프로젝트입니다.<br>
 <br>
 <h1>설치 및 실행방법</h1>
 #프로젝트 실행 전에 <b>Node.js v20.5.0, Yarn Berry</b>를 준비해주세요.<br><br>
-1. 소스파일 압축 해제<br>
+1. 소스파일 압축 해제<br><br>
 2. 프로젝트 폴더로 이동<br>
-<code>cd BOARD-NESTJS</code><br>
+<code>cd BOARD-NESTJS</code><br><br>
 3. 프로젝트 패키지 설치<br>
-<code>yarn install</code><br>
+<code>yarn install</code><br><br>
 4. 데이터베이스 환경변수 설정<br>
 &#x2022; MySQL에서 데이터베이스를 생성합니다. <br>
 &#x2022; .env파일에 사용할 데이터베이스 정보를 입력합니다.<br>
@@ -23,7 +23,7 @@ Nest.js로 개발한 익명 게시판 CRUD 프로젝트입니다.<br>
 DB_PORT=your_db_port<br>
 DB_USER=your_db_user<br>
 DB_PASSWORD=your_db_password<br>
-DB_DATABASE=your_db_database</code><br>
+DB_DATABASE=your_db_database</code><br><br>
 5.프로젝트를 실행합니다.<br>
 <code>yarn start</code>
 <br><br>
